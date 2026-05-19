@@ -2,47 +2,33 @@ import React from 'react';
 
 const skillGroups = [
   {
-    title: 'Motion & Animation',
+    title: 'Motion Design',
     items: [
-      'Шейпова анімація (After Effects)',
-      'Кінетична типографіка',
-      'Інтро / Аутро для каналів',
-      'Particle-ефекти та VFX',
-      'Logo reveal & brand animations',
-      'Анімація для Reels / TikTok',
+      'Анімація тексту та титрів',
+      'Анімовані лого та брендинг',
+      'Графічне оформлення каналів',
+      '2D-графіка та акценти',
+      'Робота з масками та фоном',
     ],
   },
   {
     title: 'Video Production',
     items: [
-      'Монтаж YouTube / TikTok / Reels',
+      'Креативний монтаж (YouTube / Reels / TikTok)',
       'Динамічна склейка під ритм',
-      'Колор-грейдинг (DaVinci Resolve)',
-      'Саунд-дизайн та зведення звуку',
-      'Субтитри з анімацією',
-      'Thumbnail design',
+      'Корекція кольору та Sound Design',
+      'Анімовані субтитри',
+      'Створення обкладок (Thumbnails)',
     ],
   },
   {
-    title: 'Tools & Software',
+    title: 'Management & Tools',
     items: [
-      'Adobe After Effects',
-      'Adobe Premiere Pro',
-      'DaVinci Resolve',
-      'Adobe Illustrator',
-      'Figma',
-      'Cinema 4D (базовий)',
-    ],
-  },
-  {
-    title: 'Project Management',
-    items: [
-      'Управління командою продакшну',
-      'Релізний calendar & дедлайни',
-      'Notion / Asana / Trello',
-      'Побудова воркфлоу з нуля',
-      'Аналітика YouTube Studio',
-      'A/B тестування тайтлів / превʼю',
+      'Керування продакшном (команда та дедлайни)',
+      'Організація роботи (Notion / Asana / Trello)',
+      'Аналітика та оптимізація (CTR / превʼю)',
+      'After Effects / Premiere Pro / DaVinci',
+      'Figma / Illustrator / Cinema 4D',
     ],
   },
 ];
@@ -55,7 +41,7 @@ const Skills = () => (
         <div className="w-full max-w-2xl border-t border-emerald-100 mt-3.5" />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {skillGroups.map(({ title, items }) => (
           <div key={title}>
             <h3 className="text-sm font-bold text-zinc-900 mb-3">{title}</h3>
