@@ -22,13 +22,18 @@ const skillGroups = [
     ],
   },
   {
-    title: 'Management & Tools',
+    title: 'Tools & Software',
+    items: [
+      'After Effects / Premiere Pro / DaVinci',
+      'Figma / Illustrator / Cinema 4D',
+    ],
+  },
+  {
+    title: 'Project Management',
     items: [
       'Керування продакшном (команда та дедлайни)',
       'Організація роботи (Notion / Asana / Trello)',
       'Аналітика та оптимізація (CTR / превʼю)',
-      'After Effects / Premiere Pro / DaVinci',
-      'Figma / Illustrator / Cinema 4D',
     ],
   },
 ];
@@ -41,7 +46,7 @@ const Skills = () => (
         <div className="w-full max-w-2xl border-t border-emerald-100 mt-3.5" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
         {skillGroups.map(({ title, items }) => (
           <div key={title}>
             <h3 className="text-sm font-bold text-zinc-900 mb-3">{title}</h3>
