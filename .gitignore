@@ -21,4 +21,9 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
+# IDEs
 *.sw?
+
+# Local Agent Workspace
+.agents/
+skills-lock.json

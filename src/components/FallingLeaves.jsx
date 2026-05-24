@@ -45,30 +45,30 @@ const LeafSVG = () => (
 );
 
 const FallingLeaves = () => {
-  // Зменшено до 15 листочків — рідко, але красиво
-  const leaves = Array.from({ length: 15 }).map((_, i) => ({
+  const leaves = Array.from({ length: 30 }).map((_, i) => ({
     id: i,
-    left: `${(i / 15) * 110 - 5}%`, // Рівномірно розподілені по ширині
-    delay: `${(i / 15) * 25}s`,      // Рівномірна затримка → без купок
-    duration: `${14 + (i % 5) * 2}s`, // Різна швидкість, але без рандому
-    size: `${28 + (i % 3) * 8}px`,   // 3 розміри: маленький, середній, великий
+    left: `${(i / 30) * 110 - 5}%`,
+    top: `${(i * 17) % 100}%`, // Псевдо-випадковий розподіл по висоті сторінки
+    delay: `-${(i * 11) % 25}s`,
+    duration: `${14 + (i % 5) * 2}s`,
+    size: `${28 + (i % 3) * 8}px`,
     swayDuration: `${5 + (i % 3)}s`,
     swayDelay: `${(i % 4)}s`,
-    rotateOffset: -25 + (i % 3) * 10, // Легкий нахил, як у природі
+    rotateOffset: -25 + (i % 3) * 10,
   }));
 
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
       {leaves.map((leaf) => (
         <div
           key={leaf.id}
           className="absolute"
           style={{
             left: leaf.left,
-            top: '-10%',
+            top: leaf.top,
             width: leaf.size,
             height: leaf.size,
-            animation: `fall ${leaf.duration} linear infinite`,
+            animation: `fall ${leaf.duration} linear infinite both`,
             animationDelay: leaf.delay,
             transform: `rotate(${leaf.rotateOffset}deg)`,
           }}

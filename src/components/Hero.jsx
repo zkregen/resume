@@ -1,75 +1,269 @@
-import React from 'react';
-import { MapPin, Clock, ExternalLink } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+
+const roles = ['Motion Designer', 'Animator', 'Video Editor', 'Project Manager'];
+
+const stats = [
+  { value: '12M+',  label: 'переглядів / міс.' },
+  { value: '+300%', label: 'зростання охоплення' },
+  { value: '100%',  label: 'дедлайни виконані' },
+];
+
+const highlights = [
+  {
+    text: 'Управління міжнародною мережею YouTube-каналів із мільйонними охопленнями.',
+    accent: null,
+  },
+  {
+    text: ['Оптимізував виробництво та збільшив охоплення мережі ', 'більш ніж на 300%', '.'],
+    accent: 1,
+  },
+  {
+    text: ['Закордонні клієнти та бренди — ', 'США, Німеччина, Фінляндія', '.'],
+    accent: 1,
+  },
+  {
+    text: 'Від ідеї та скетчу — до фінального рендеру, саунд-дизайну та публікації.',
+    accent: null,
+  },
+];
 
 const Hero = () => {
   return (
-    <section id="hero" className="section-block pt-24 pb-0">
-      <div className="page-col">
-        {/* Avatar + Name row */}
-        <div className="flex items-center gap-5 mb-5 fade-up">
-          {/* Avatar */}
-          <div className="flex-shrink-0">
-            <img
-              src="/photo.jpg"
-              alt="Микита Ніколаєнко"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-              className="w-20 h-20 rounded-full object-cover avatar-ring"
-            />
-            {/* Fallback placeholder */}
-            <div
-              className="w-20 h-20 rounded-full avatar-ring bg-gradient-to-br from-emerald-600 to-teal-800 items-center justify-center text-white text-2xl font-black"
-              style={{ display: 'none' }}
-            >
-              МН
+    <section
+      id="hero"
+      style={{ paddingTop: '128px', paddingBottom: '72px', position: 'relative' }}
+    >
+      <div className="col-wide">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* ── Left Column: Bio & Info ── */}
+          <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
+            
+            {/* Name and tags */}
+            <div>
+              <h1
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 900,
+                  fontSize: 'clamp(36px, 6vw, 54px)',
+                  letterSpacing: '-0.035em',
+                  lineHeight: 1.05,
+                  color: 'var(--tx-1)',
+                  marginBottom: '24px',
+                }}
+              >
+                Микита <span className="grad-em">Ніколаєнко</span>
+              </h1>
+              
+              {/* Role tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {roles.map((role, i) => (
+                  <span
+                    key={role}
+                    className={i === 0 ? 'tag-em' : 'tag'}
+                    style={{ fontSize: '11px' }}
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
             </div>
+
+            {/* Bio text */}
+            <p
+              style={{
+                fontSize: '16px',
+                lineHeight: 1.75,
+                color: 'var(--tx-2)',
+                maxWidth: '600px',
+              }}
+            >
+              Створюю відеоконтент, який{' '}
+              <span
+                style={{
+                  color: 'var(--tx-1)',
+                  fontWeight: 600,
+                  borderBottom: '1px solid var(--em-border)',
+                  paddingBottom: '1px',
+                }}
+              >
+                вартий уваги
+              </span>
+              . Спеціалізуюся на моушн-дизайні, анімації та динамічному монтажі для YouTube, Reels та TikTok.
+            </p>
+
+            {/* Highlights List */}
+            <div className="glass" style={{ padding: '24px 28px' }}>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {highlights.map((item, i) => (
+                  <li
+                    key={i}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '14px',
+                      fontSize: '14px',
+                      lineHeight: 1.65,
+                      color: 'var(--tx-2)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: 'var(--em)',
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontWeight: 700,
+                        fontSize: '15px',
+                        lineHeight: 1.4,
+                        flexShrink: 0,
+                        marginTop: '1px',
+                      }}
+                    >
+                      ›
+                    </span>
+                    <span>
+                      {Array.isArray(item.text) ? (
+                        item.text.map((part, j) =>
+                          j === item.accent ? (
+                            <span key={j} style={{ color: 'var(--em)', fontWeight: 700 }}>{part}</span>
+                          ) : (
+                            <span key={j}>{part}</span>
+                          )
+                        )
+                      ) : (
+                        item.text
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA Buttons */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', paddingTop: '8px' }}>
+              <a
+                href="https://freelancehunt.com/freelancer/thirtyass.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                Замовити проєкт
+                <ArrowUpRight size={16} />
+              </a>
+              <a
+                href="https://drive.google.com/drive/folders/1dHnZJL8DctbLkW8KM1Q5ADQ15FMPYMNy?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary"
+              >
+                Портфоліо на Drive
+              </a>
+            </div>
+
           </div>
 
-          {/* Name block */}
-          <div className="flex flex-col gap-3">
-            <h1 className="text-3xl sm:text-4xl font-black text-zinc-900 leading-none tracking-tight">
-              Микита Ніколаєнко
-            </h1>
-            {/* Role badges */}
-            <div className="flex flex-wrap gap-1.5">
-              {['Motion Designer', 'Animator', 'Video Editor', 'Project Manager'].map((role) => (
-                <span key={role} className="tag-green">{role}</span>
+          {/* ── Right Column: Avatar & Stats ── */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-8">
+            
+            {/* Avatar container */}
+            <div style={{ position: 'relative' }}>
+              <img
+                src="/photo.jpg"
+                alt="Микита Ніколаєнко"
+                onError={e => {
+                  e.target.onerror = null;
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+                className="avatar-ring"
+                style={{
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  animation: 'float 6s ease-in-out infinite',
+                }}
+              />
+              {/* Fallback */}
+              <div
+                className="avatar-ring"
+                style={{
+                  display: 'none',
+                  width: '160px',
+                  height: '160px',
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #00d97e, #00b868)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#040b07',
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 900,
+                  fontSize: '36px',
+                  animation: 'float 6s ease-in-out infinite',
+                }}
+              >
+                МН
+              </div>
+            </div>
+
+            {/* Stats list */}
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '320px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+              }}
+            >
+              {stats.map(({ value, label }) => (
+                <div
+                  key={label}
+                  style={{
+                    padding: '16px 20px',
+                    borderRadius: '16px',
+                    border: '1px solid var(--border-subtle)',
+                    background: 'rgba(0, 217, 126, 0.025)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '16px',
+                    transition: 'all 0.3s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(0, 217, 126, 0.065)';
+                    e.currentTarget.style.borderColor = 'var(--em-border)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(0, 217, 126, 0.025)';
+                    e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontSize: '12px',
+                      color: 'var(--tx-3)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      fontWeight: 600,
+                      lineHeight: 1.3,
+                      maxWidth: '140px',
+                    }}
+                  >
+                    {label}
+                  </span>
+                  <span className="stat-val grad-em" style={{ fontSize: '24px', flexShrink: 0 }}>
+                    {value}
+                  </span>
+                </div>
               ))}
             </div>
-          </div>
-        </div>
 
-        {/* Bio */}
-        <div className="space-y-4 mb-6 fade-up delay-2">
-          <p className="text-zinc-800 text-base leading-relaxed font-medium">
-            Створюю відеоконтент, який <span className="text-emerald-800 font-extrabold underline decoration-emerald-500/50 decoration-2 underline-offset-4">вартий уваги</span>. 
-            Спеціалізуюся на моушн-дизайні, анімації та динамічному монтажі для YouTube, Reels та TikTok.
-          </p>
-          
-          <div className="bg-white/60 backdrop-blur-sm border border-emerald-100 rounded-xl p-5">
-            <ul className="space-y-3.5 text-[15px] sm:text-base text-zinc-900 font-medium">
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 flex-shrink-0 font-mono font-black text-base">&gt;</span>
-                <span>Управління міжнародною мережею YouTube-каналів із мільйонними охопленнями.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 flex-shrink-0 font-mono font-black text-base">&gt;</span>
-                <span>Оптимізував процеси виробництва та збільшив загальне охоплення мережі <span className="text-emerald-800 font-extrabold bg-emerald-100/80 px-1.5 py-0.5 rounded whitespace-nowrap">більш ніж на 300%</span>.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 flex-shrink-0 font-mono font-black text-base">&gt;</span>
-                <span>Робота із закордонними клієнтами та брендами (<span className="text-emerald-850 font-bold">США, Німеччина, Фінляндія</span>).</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-600 flex-shrink-0 font-mono font-black text-base">&gt;</span>
-                <span>Веду проєкт від ідеї та скетчу — до фінального рендеру, саунд-дизайну та публікації.</span>
-              </li>
-            </ul>
           </div>
-        </div>      </div>
+
+        </div>
+      </div>
     </section>
   );
 };

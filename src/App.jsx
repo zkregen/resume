@@ -3,39 +3,68 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
 import Portfolio from './components/Portfolio';
-import FallingLeaves from './components/FallingLeaves';
+import AmbientOrbs from './components/AmbientOrbs';
 
 function App() {
   const glowRef = useRef(null);
 
   useEffect(() => {
+    let rafId;
+    let currentX = window.innerWidth / 2;
+    let currentY = window.innerHeight / 2;
+    let targetX = currentX;
+    let targetY = currentY;
+
     const handleMouseMove = (e) => {
-      if (!glowRef.current) return;
-      
-      const x = e.clientX;
-      const y = e.clientY;
-      
-      // М'яке смарагдове світіння, яке слідує за курсором
-      glowRef.current.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(16, 185, 129, 0.07), transparent 45%)`;
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    const animate = () => {
+      currentX += (targetX - currentX) * 0.05;
+      currentY += (targetY - currentY) * 0.05;
+
+      if (glowRef.current) {
+        glowRef.current.style.background = `radial-gradient(680px circle at ${currentX}px ${currentY}px, rgba(0, 217, 126, 0.048), transparent 50%)`;
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    rafId = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
-    <div className="relative bg-[#e3f0e6] text-zinc-800 min-h-screen antialiased selection:bg-emerald-500/20">
-      {/* Падаючі листочки на фоні */}
-      <FallingLeaves />
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100svh',
+        background: 'var(--bg-base)',
+        color: 'var(--tx-1)',
+      }}
+    >
+      {/* Cinematic ambient background */}
+      <AmbientOrbs />
 
-      {/* Ефект світіння за курсором */}
-      <div 
+      {/* Cursor spotlight glow */}
+      <div
         ref={glowRef}
-        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+          transition: 'none',
+        }}
       />
-      
-      {/* Основний контент поверх фону */}
-      <div className="relative z-10">
+
+      {/* Page content */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
         <Navbar />
         <main>
           <Hero />
