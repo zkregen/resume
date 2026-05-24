@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, Eye, TrendingUp, Clock, Folder, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { ArrowUpRight, Eye, TrendingUp, Clock, Folder, ChevronLeft, ChevronRight, Play, Pause, Maximize2, ExternalLink, X } from 'lucide-react';
 
 const projects = [
   {
@@ -7,6 +7,7 @@ const projects = [
     type: 'Motion Design',
     title: 'Motion Graphic Intro для летсплей-каналу',
     video: '/video_intro.mp4',
+    link: '/video_intro.mp4',
     description: 'Повноцінний моушн-ролик від скетчу до рендеру. Адаптація під YouTube, Reels і TikTok.',
     tasks: [
       'Розробка концепції та мудборду',
@@ -23,6 +24,7 @@ const projects = [
     type: 'Motion Design',
     title: 'Створення 2.5D Паралакс-ефекту',
     video: '/parallax.mp4',
+    link: '/parallax.mp4',
     description: 'Розділення статичного зображення на багатовимірні шари та їх анімація у 3D-просторі After Effects. Додавання глибини різкості (DOF) та світлового об’єму.',
     tasks: [
       'Підготовка та домальовування шарів у Photoshop',
@@ -41,6 +43,7 @@ const projects = [
     id: 'viral-shortform',
     type: 'Video Editing',
     title: 'Viral Short-form серія для TikTok/Reels',
+    link: 'https://drive.google.com/drive/folders/1dHnZJL8DctbLkW8KM1Q5ADQ15FMPYMNy?usp=sharing',
     description: 'Серія вертикального контенту з максимальним утриманням у перші 3 секунди: динамічний монтаж, трендові переходи, субтитри, hook-формули.',
     tasks: [
       'Hook-формули для утримання',
@@ -173,7 +176,7 @@ const CardVideo = ({ src, isPlay, accentColor, onDuration }) => {
 };
 
 /* ── Single project card ── */
-const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
+const ProjectCard = ({ project, isCenter, onVideoDuration, onViewFull }) => {
   const hasVideo = Boolean(project.video);
   const isGold = project.tagColor === 'gold';
 
@@ -251,7 +254,12 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
             </span>
 
             {hasVideo && isCenter && (
-              <div
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewFull(project);
+                }}
+                title="Дивитись на весь екран"
                 style={{
                   width: '34px',
                   height: '34px',
@@ -262,10 +270,24 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backdropFilter: 'blur(8px)',
+                  cursor: 'pointer',
+                  transition: 'all 0.25s var(--ease-out)',
+                  padding: 0,
+                  outline: 'none',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'scale(1.15)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.20)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.10)';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
                 }}
               >
-                <Play size={13} fill="white" color="white" />
-              </div>
+                <Maximize2 size={13} color="white" />
+              </button>
             )}
           </div>
 
@@ -324,6 +346,49 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
               </li>
             ))}
           </ul>
+
+          {/* Full-screen / original link action */}
+          {isCenter && (project.video || project.link) && (
+            <div style={{ marginTop: '18px' }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onViewFull(project);
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: 'pointer',
+                  background: isGold ? 'var(--gold-dim)' : 'var(--em-dim)',
+                  border: `1px solid ${isGold ? 'var(--gold-border)' : 'var(--em-border)'}`,
+                  color: isGold ? 'var(--gold)' : 'var(--em)',
+                  padding: '7px 16px',
+                  borderRadius: '99px',
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  fontFamily: "'JetBrains Mono', monospace",
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  transition: 'all 0.25s var(--ease-out)',
+                  outline: 'none',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = isGold ? 'rgba(240,192,64,0.18)' : 'rgba(0,217,126,0.18)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = `0 4px 12px ${isGold ? 'rgba(240,192,64,0.15)' : 'rgba(0,217,126,0.15)'}`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = isGold ? 'var(--gold-dim)' : 'var(--em-dim)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
+              >
+                {project.video ? <Maximize2 size={12} /> : <ExternalLink size={12} />}
+                <span>{project.video ? 'Дивитись на весь екран' : 'Дивитись оригінал'}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Metrics row */}
@@ -403,6 +468,7 @@ const Portfolio = () => {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [intervalDuration, setIntervalDuration] = useState(8000);
+  const [fullscreenVideo, setFullscreenVideo] = useState(null);
 
   const next = () => setActive(p => (p + 1) % projects.length);
   const prev = () => setActive(p => (p - 1 + projects.length) % projects.length);
@@ -418,11 +484,11 @@ const Portfolio = () => {
   }, [paused, active, intervalDuration]);
 
   return (
-    <section id="portfolio" style={{ paddingTop: '0px', paddingBottom: '96px', overflow: 'hidden' }}>
+    <section id="portfolio" style={{ paddingTop: '48px', paddingBottom: '96px', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Section heading */}
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '36px' }}>
           <h2
             style={{
               fontFamily: "'Outfit', sans-serif",
@@ -489,6 +555,13 @@ const Portfolio = () => {
                   onVideoDuration={(dur) => {
                     if (isCenter) {
                       setIntervalDuration(dur + 150); // add a slight buffer (150ms) to ensure smooth transition
+                    }
+                  }}
+                  onViewFull={(proj) => {
+                    if (proj.video) {
+                      setFullscreenVideo(proj.video);
+                    } else if (proj.link) {
+                      window.open(proj.link, '_blank');
                     }
                   }}
                 />
@@ -610,6 +683,89 @@ const Portfolio = () => {
         </div>
 
       </div>
+
+      {/* Full-screen Lightbox Video Modal */}
+      {fullscreenVideo && (
+        <div
+          onClick={() => setFullscreenVideo(null)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            background: 'rgba(5, 5, 8, 0.95)',
+            backdropFilter: 'blur(16px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setFullscreenVideo(null)}
+            aria-label="Закрити"
+            style={{
+              position: 'absolute',
+              top: '24px',
+              right: '24px',
+              width: '46px',
+              height: '46px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.05)',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.25s var(--ease-out)',
+              backdropFilter: 'blur(8px)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'scale(1.1)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.30)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+            }}
+          >
+            <X size={20} />
+          </button>
+
+          {/* Video Container */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              width: '90%',
+              maxWidth: '1280px',
+              maxHeight: '85vh',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08)',
+              background: '#000',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <video
+              src={fullscreenVideo}
+              autoPlay
+              controls
+              playsInline
+              style={{
+                maxWidth: '100%',
+                maxHeight: '85vh',
+                borderRadius: '16px',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
