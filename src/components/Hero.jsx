@@ -1,13 +1,53 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 
 const roles = ['Motion Designer', 'Animator', 'Video Editor', 'Project Manager'];
 
 const stats = [
-  { value: '12M+',  label: 'переглядів / міс.' },
-  { value: '+300%', label: 'зростання охоплення' },
-  { value: '100%',  label: 'дедлайни виконані' },
+  { target: 12, prefix: '', suffix: 'M+', label: 'переглядів / міс.' },
+  { target: 300, prefix: '+', suffix: '%', label: 'зростання охоплення' },
+  { target: 100, prefix: '', suffix: '%', label: 'дедлайни виконані' },
 ];
+
+/* ── Smooth Count Up Sub-component ── */
+const CountUp = ({ target, prefix = '', suffix = '', delay = 800, duration = 1200 }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    let timerId;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeProgress = progress * (2 - progress); // Ease Out Quad
+      setCount(Math.floor(easeProgress * target));
+
+      if (progress < 1) {
+        timerId = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    const delayId = setTimeout(() => {
+      timerId = requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      clearTimeout(delayId);
+      if (timerId) cancelAnimationFrame(timerId);
+    };
+  }, [target, delay, duration]);
+
+  return (
+    <>
+      {prefix}
+      {count}
+      {suffix}
+    </>
+  );
+};
 
 const highlights = [
   {
@@ -216,7 +256,7 @@ const Hero = () => {
                 gap: '12px',
               }}
             >
-              {stats.map(({ value, label }) => (
+              {stats.map(({ target, prefix, suffix, label }) => (
                 <div
                   key={label}
                   style={{
@@ -254,7 +294,7 @@ const Hero = () => {
                     {label}
                   </span>
                   <span className="stat-val grad-em" style={{ fontSize: '24px', flexShrink: 0 }}>
-                    {value}
+                    <CountUp target={target} prefix={prefix} suffix={suffix} />
                   </span>
                 </div>
               ))}
