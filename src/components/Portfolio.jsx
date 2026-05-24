@@ -328,9 +328,13 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
             ))}
           </ul>
 
+        </div>
+
+        {/* Bottom block with Google Drive Link & Metrics */}
+        <div>
           {/* Subtle Google Drive Link */}
-          {isCenter && project.link && (
-            <div style={{ marginTop: '16px' }}>
+          {project.link && (
+            <div style={{ marginBottom: '14px', display: 'flex', justifyContent: 'flex-start' }}>
               <a
                 href={project.link}
                 target="_blank"
@@ -363,18 +367,16 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
               </a>
             </div>
           )}
-        </div>
 
-        {/* Metrics row */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 0,
-            borderTop: `1px solid ${hasVideo ? 'rgba(255,255,255,0.10)' : 'var(--border-subtle)'}`,
-            paddingTop: '18px',
-            marginTop: '20px',
-          }}
-        >
+          {/* Metrics row */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 0,
+              borderTop: `1px solid ${hasVideo ? 'rgba(255,255,255,0.10)' : 'var(--border-subtle)'}`,
+              paddingTop: '18px',
+            }}
+          >
           {project.metrics.map(({ icon: Icon, value, label }, i) => (
             <div
               key={label}
@@ -432,6 +434,7 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
