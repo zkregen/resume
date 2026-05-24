@@ -478,3 +478,43 @@ body::after {
   background: linear-gradient(90deg, transparent, var(--em-border), transparent);
   margin: 0;
 }
+
+/* ── HIGHLIGHT ITEMS HOVER ANIMATION ── */
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--tx-2);
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  cursor: default;
+}
+.highlight-item:hover {
+  color: var(--tx-1);
+  transform: translateX(4px);
+}
+.highlight-item .accent-text {
+  display: inline-block;
+  color: var(--em);
+  font-weight: 700;
+  transition: all 0.25s var(--ease-out);
+}
+.highlight-item:hover .accent-text {
+  color: #fff;
+  text-shadow: 0 0 12px var(--em-glow);
+  transform: scale(1.03);
+}
+.highlight-item .bullet {
+  color: var(--em);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.4;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: transform 0.25s var(--ease-out);
+}
+.highlight-item:hover .bullet {
+  transform: scale(1.3);
+}

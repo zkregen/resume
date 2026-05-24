@@ -51,7 +51,7 @@ const CountUp = ({ target, prefix = '', suffix = '', delay = 800, duration = 120
 
 const highlights = [
   {
-    text: ['Керую ', 'міжнародними YouTube-каналами', ' з мільйонними охопленнями.'],
+    text: ['Керую міжнародними YouTube-каналами з ', 'мільйонними охопленнями', '.'],
     accent: 1,
   },
   {
@@ -59,11 +59,11 @@ const highlights = [
     accent: 1,
   },
   {
-    text: ['Співпрацюю із ', 'закордонними брендами та клієнтами', '.'],
+    text: ['Співпрацюю із ', 'закордонними брендами', ' та клієнтами.'],
     accent: 1,
   },
   {
-    text: ['Супроводжую ', 'весь цикл: від розробки ідеї до саунд-дизайну та публікації', '.'],
+    text: ['Супроводжую ', 'весь цикл', ': від розробки ідеї до саунд-дизайну та публікації.'],
     accent: 1,
   },
 ];
@@ -137,35 +137,13 @@ const Hero = () => {
             <div className="glass" style={{ padding: '24px 28px' }}>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {highlights.map((item, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '14px',
-                      fontSize: '14px',
-                      lineHeight: 1.65,
-                      color: 'var(--tx-2)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: 'var(--em)',
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontWeight: 700,
-                        fontSize: '15px',
-                        lineHeight: 1.4,
-                        flexShrink: 0,
-                        marginTop: '1px',
-                      }}
-                    >
-                      ›
-                    </span>
+                  <li key={i} className="highlight-item">
+                    <span className="bullet">›</span>
                     <span>
                       {Array.isArray(item.text) ? (
                         item.text.map((part, j) =>
                           j === item.accent ? (
-                            <span key={j} style={{ color: 'var(--em)', fontWeight: 700 }}>{part}</span>
+                            <span key={j} className="accent-text">{part}</span>
                           ) : (
                             <span key={j}>{part}</span>
                           )
