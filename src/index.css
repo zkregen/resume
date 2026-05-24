@@ -24,11 +24,11 @@
   --em-glow:        rgba(0, 217, 126, 0.30);
   --em-glow-lg:     rgba(0, 217, 126, 0.18);
 
-  /* Gold accent (secondary) */
-  --gold:           #f0c040;
-  --gold-dim:       rgba(240, 192, 64, 0.10);
-  --gold-border:    rgba(240, 192, 64, 0.25);
-  --gold-glow:      rgba(240, 192, 64, 0.25);
+  /* Steel accent (secondary) */
+  --steel:          #8da6c9;
+  --steel-dim:      rgba(141, 166, 201, 0.08);
+  --steel-border:   rgba(141, 166, 201, 0.20);
+  --steel-glow:     rgba(141, 166, 201, 0.20);
 
   /* Text */
   --tx-1:           #eef2f8;
@@ -53,7 +53,7 @@
                  0 8px 32px rgba(0,0,0,0.55),
                  0 2px 8px rgba(0,0,0,0.40);
   --shadow-glow-em:  0 0 48px rgba(0,217,126,0.14);
-  --shadow-glow-gold: 0 0 48px rgba(240,192,64,0.12);
+  --shadow-glow-steel: 0 0 48px rgba(141,166,201,0.12);
   --shadow-float: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
 
   /* Easing */
@@ -207,7 +207,7 @@
     transform: scale(1.04);
   }
 
-  .tag-gold {
+  .tag-steel {
     display: inline-flex;
     align-items: center;
     font-size: 11px;
@@ -216,9 +216,9 @@
     border-radius: var(--r-full);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    background: var(--gold-dim);
-    border: 1px solid var(--gold-border);
-    color: var(--gold);
+    background: var(--steel-dim);
+    border: 1px solid var(--steel-border);
+    color: var(--steel);
   }
 
   /* ── BUTTONS ── */
@@ -289,15 +289,15 @@
     background-clip: text;
   }
 
-  .grad-gold {
-    background: linear-gradient(135deg, #f0c040 0%, #f5d060 50%, #ffe090 100%);
+  .grad-steel {
+    background: linear-gradient(135deg, #7b94b8 0%, #a2b7d4 50%, #ccdcf0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .grad-warm {
-    background: linear-gradient(135deg, #00d97e 0%, #f0c040 100%);
+    background: linear-gradient(135deg, #00d97e 0%, #8da6c9 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -460,7 +460,7 @@ body::after {
 .page-col { @apply col-narrow; }
 .section-block { padding-top: 56px; padding-bottom: 56px; }
 .gradient-text { @apply grad-em; }
-.gradient-text-gold { @apply grad-gold; }
+.gradient-text-steel { @apply grad-steel; }
 .section-label { @apply section-eyebrow; }
 .tag-accent { @apply tag-em; }
 .btn-green { @apply btn-primary; }

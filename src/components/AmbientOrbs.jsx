@@ -37,7 +37,7 @@ const AmbientOrbs = () => {
     // Colors matching theme tokens
     const colors = [
       'rgba(0, 217, 126, ',   // Emerald primary
-      'rgba(240, 192, 64, ',  // Gold secondary
+      'rgba(141, 166, 201, ',  // Steel secondary
       'rgba(238, 242, 248, ', // Light white
     ];
 
@@ -112,7 +112,7 @@ const AmbientOrbs = () => {
           ctx.shadowColor = this.colorIndex === 0 
             ? 'rgba(0, 217, 126, 0.5)' 
             : this.colorIndex === 1 
-            ? 'rgba(240, 192, 64, 0.5)' 
+            ? 'rgba(141, 166, 201, 0.5)' 
             : 'rgba(255, 255, 255, 0.3)';
         } else {
           ctx.shadowBlur = 0;
@@ -234,7 +234,7 @@ const AmbientOrbs = () => {
         }}
       />
 
-      {/* Gold accent orb — bottom right */}
+      {/* Steel accent orb — bottom right */}
       <div
         style={{
           position: 'absolute',
@@ -245,7 +245,7 @@ const AmbientOrbs = () => {
           maxWidth: '600px',
           maxHeight: '600px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(240,192,64,0.07) 0%, rgba(240,192,64,0.02) 50%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(141,166,201,0.09) 0%, rgba(141,166,201,0.03) 50%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'float 18s ease-in-out infinite reverse',
         }}

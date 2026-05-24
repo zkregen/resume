@@ -36,8 +36,8 @@ const projects = [
       { icon: Eye,       value: '2.5D', label: 'Анімація' },
       { icon: Clock,     value: '4K UHD', label: 'Рендер' },
     ],
-    accentColor: '#f0c040',
-    tagColor: 'gold',
+    accentColor: '#8da6c9',
+    tagColor: 'steel',
   },
   {
     id: 'viral-shortform',
@@ -178,7 +178,7 @@ const CardVideo = ({ src, isPlay, accentColor, onDuration }) => {
 /* ── Single project card ── */
 const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
   const hasVideo = Boolean(project.video);
-  const isGold = project.tagColor === 'gold';
+  const isSteel = project.tagColor === 'steel';
 
   return (
     <div
@@ -189,10 +189,10 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
         overflow: 'hidden',
         background: hasVideo ? '#030608' : 'var(--bg-card)',
         border: `1px solid ${isCenter
-          ? isGold ? 'rgba(240,192,64,0.28)' : 'rgba(0,217,126,0.28)'
+          ? isSteel ? 'rgba(141,166,201,0.22)' : 'rgba(0,217,126,0.28)'
           : 'rgba(255,255,255,0.05)'}`,
         boxShadow: isCenter
-          ? `var(--shadow-float), 0 0 60px ${isGold ? 'rgba(240,192,64,0.10)' : 'rgba(0,217,126,0.12)'}`
+          ? `var(--shadow-float), 0 0 60px ${isSteel ? 'rgba(141,166,201,0.08)' : 'rgba(0,217,126,0.12)'}`
           : 'none',
         backdropFilter: 'blur(28px)',
         transition: 'border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out)',
@@ -244,8 +244,8 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
                 letterSpacing: '0.16em',
                 textTransform: 'uppercase',
                 color: project.accentColor,
-                background: isGold ? 'var(--gold-dim)' : 'var(--em-dim)',
-                border: `1px solid ${isGold ? 'var(--gold-border)' : 'var(--em-border)'}`,
+                background: isSteel ? 'var(--steel-dim)' : 'var(--em-dim)',
+                border: `1px solid ${isSteel ? 'var(--steel-border)' : 'var(--em-border)'}`,
                 padding: '4px 11px',
                 borderRadius: '99px',
               }}
@@ -397,9 +397,9 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
                   letterSpacing: '-0.04em',
                   lineHeight: 1,
                   marginBottom: '5px',
-                  background: isGold
-                    ? 'linear-gradient(135deg, #f0c040, #ffe090)'
-                    : 'linear-gradient(135deg, #00d97e, #80f0c8)',
+                  background: isSteel
+                      ? 'linear-gradient(135deg, #7b94b8, #b0c5e3)'
+                      : 'linear-gradient(135deg, #00d97e, #80f0c8)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -475,7 +475,7 @@ const Portfolio = () => {
               lineHeight: 1.1,
             }}
           >
-            Вибрані <span className="grad-gold">кейси</span>
+            Вибрані <span className="grad-steel">кейси</span>
           </h2>
         </div>
 

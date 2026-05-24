@@ -48,7 +48,7 @@ const skillGroups = [
       'Автоматизація процесів',
     ],
     level: 88,
-    accent: 'gold',
+    accent: 'steel',
   },
   {
     title: 'Soft Skills',
@@ -64,7 +64,7 @@ const skillGroups = [
       'Вміння працювати в команді',
     ],
     level: 90,
-    accent: 'gold',
+    accent: 'steel',
   },
 ];
 
@@ -91,10 +91,10 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
     return () => observer.disconnect();
   }, [level]);
 
-  const isGold = accent === 'gold';
-  const accentColor = isGold ? 'var(--gold)' : 'var(--em)';
-  const accentDim = isGold ? 'var(--gold-dim)' : 'var(--em-dim)';
-  const accentBorder = isGold ? 'var(--gold-border)' : 'var(--em-border)';
+  const isSteel = accent === 'steel';
+  const accentColor = isSteel ? 'var(--steel)' : 'var(--em)';
+  const accentDim = isSteel ? 'var(--steel-dim)' : 'var(--em-dim)';
+  const accentBorder = isSteel ? 'var(--steel-border)' : 'var(--em-border)';
 
   return (
     <div
@@ -103,7 +103,7 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
       style={{ padding: '24px', cursor: 'default', height: '100%' }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = accentBorder;
-        e.currentTarget.style.boxShadow = `var(--shadow-card), 0 0 40px ${isGold ? 'rgba(240,192,64,0.10)' : 'rgba(0,217,126,0.12)'}`;
+        e.currentTarget.style.boxShadow = `var(--shadow-card), 0 0 40px ${isSteel ? 'rgba(141,166,201,0.08)' : 'rgba(0,217,126,0.12)'}`;
       }}
       onMouseLeave={e => {
         e.currentTarget.style.borderColor = 'var(--border-subtle)';
@@ -148,8 +148,8 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
               className="skill-bar-fill"
               style={{
                 transform: 'scaleX(0)',
-                background: isGold
-                  ? 'linear-gradient(90deg, #c8960a, #f0c040)'
+                background: isSteel
+                  ? 'linear-gradient(90deg, #6c84a3, #8da6c9)'
                   : 'linear-gradient(90deg, #00b868, #00d97e)',
               }}
             />
