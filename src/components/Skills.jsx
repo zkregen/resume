@@ -210,8 +210,6 @@ const Skills = () => {
 
         {/* Section heading */}
         <div style={{ marginBottom: '40px' }}>
-          <p className="section-eyebrow">Навички</p>
-          <div className="section-divider" style={{ marginBottom: '24px' }} />
           <h2
             style={{
               fontFamily: "'Outfit', sans-serif",
