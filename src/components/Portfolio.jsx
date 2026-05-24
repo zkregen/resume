@@ -341,17 +341,21 @@ const ProjectCard = ({ project, isCenter, onVideoDuration }) => {
                   alignItems: 'center',
                   gap: '6px',
                   fontSize: '11px',
-                  color: 'rgba(255, 255, 255, 0.40)',
+                  color: 'rgba(255, 255, 255, 0.65)',
                   fontFamily: "'JetBrains Mono', monospace",
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
-                  transition: 'color 0.25s var(--ease-out)',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                  paddingBottom: '2px',
+                  transition: 'all 0.25s var(--ease-out)',
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.color = project.accentColor;
+                  e.currentTarget.style.borderBottomColor = project.accentColor;
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.40)';
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.65)';
+                  e.currentTarget.style.borderBottomColor = 'rgba(255, 255, 255, 0.15)';
                 }}
               >
                 <span>Google Drive</span>
