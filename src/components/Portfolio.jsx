@@ -484,11 +484,11 @@ const Portfolio = () => {
   }, [paused, active, intervalDuration]);
 
   return (
-    <section id="portfolio" style={{ paddingTop: '48px', paddingBottom: '96px', overflow: 'hidden' }}>
+    <section id="portfolio" style={{ paddingTop: '40px', paddingBottom: '96px', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Section heading */}
-        <div style={{ marginBottom: '36px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <h2
             style={{
               fontFamily: "'Outfit', sans-serif",
