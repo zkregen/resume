@@ -32,7 +32,7 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      style={{ paddingTop: '128px', paddingBottom: '72px', position: 'relative' }}
+      style={{ paddingTop: '128px', paddingBottom: '48px', position: 'relative' }}
     >
       <div className="col-wide">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

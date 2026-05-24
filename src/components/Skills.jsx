@@ -35,24 +35,6 @@ const skillGroups = [
     accent: 'em',
   },
   {
-    title: 'Tools & Software',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-      </svg>
-    ),
-    items: [
-      'After Effects',
-      'Premiere Pro',
-      'DaVinci Resolve',
-      'Figma',
-      'Illustrator',
-      'Cinema 4D',
-    ],
-    level: 90,
-    accent: 'gold',
-  },
-  {
     title: 'Project Management',
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -61,11 +43,27 @@ const skillGroups = [
     ),
     items: [
       'Керування продакшном',
-      'Організація команди 8+ чол.',
+      'Розподіл задач, делегування та контроль якості',
       'Аналітика та оптимізація',
       'Автоматизація процесів',
     ],
     level: 88,
+    accent: 'gold',
+  },
+  {
+    title: 'Soft Skills',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    ),
+    items: [
+      'English B2',
+      'Узгодження правок через конструктивний діалог',
+      'Здатність самостійно вирішувати форс-мажори',
+      'Вміння працювати в команді',
+    ],
+    level: 90,
     accent: 'gold',
   },
 ];
@@ -157,17 +155,6 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
             />
           </div>
         </div>
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '12px',
-            fontWeight: 600,
-            color: accentColor,
-            opacity: 0.85,
-          }}
-        >
-          {level}%
-        </span>
       </div>
 
       {/* Items */}
@@ -205,7 +192,7 @@ const Skills = () => {
   }, []);
 
   return (
-    <section id="skills" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+    <section id="skills" style={{ paddingTop: '0px', paddingBottom: '40px' }}>
       <div className="col-wide" ref={sectionRef}>
 
         {/* Section heading */}

@@ -418,13 +418,11 @@ const Portfolio = () => {
   }, [paused, active, intervalDuration]);
 
   return (
-    <section id="portfolio" style={{ paddingTop: '24px', paddingBottom: '96px', overflow: 'hidden' }}>
+    <section id="portfolio" style={{ paddingTop: '0px', paddingBottom: '96px', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Section heading */}
-        <div style={{ marginBottom: '40px' }}>
-          <p className="section-eyebrow">Портфоліо</p>
-          <div className="section-divider" style={{ marginBottom: '24px' }} />
+        <div style={{ marginBottom: '20px' }}>
           <h2
             style={{
               fontFamily: "'Outfit', sans-serif",
