@@ -4,7 +4,6 @@ import { X, Send, Mail, ExternalLink } from 'lucide-react';
 const navLinks = [
   { href: '#skills',    label: 'Навички' },
   { href: '#portfolio', label: 'Портфоліо' },
-  { href: '#contacts',  label: 'Контакти' },
 ];
 
 const Navbar = () => {
