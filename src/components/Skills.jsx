@@ -48,7 +48,7 @@ const skillGroups = [
       'Автоматизація процесів',
     ],
     level: 88,
-    accent: 'steel',
+    accent: 'purple',
   },
   {
     title: 'Soft Skills',
@@ -64,16 +64,17 @@ const skillGroups = [
       'Вміння працювати в команді',
     ],
     level: 90,
-    accent: 'steel',
+    accent: 'purple',
   },
 ];
 
-const SkillCard = ({ title, icon, items, level, accent }) => {
+const SkillCard = ({ title, icon, items, level, accent, isLoaded }) => {
   const barRef = useRef(null);
   const cardRef = useRef(null);
   const mounted = useRef(false);
 
   useEffect(() => {
+    if (!isLoaded) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && barRef.current && !mounted.current) {
@@ -89,12 +90,12 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
     );
     if (cardRef.current) observer.observe(cardRef.current);
     return () => observer.disconnect();
-  }, [level]);
+  }, [level, isLoaded]);
 
-  const isSteel = accent === 'steel';
-  const accentColor = isSteel ? 'var(--steel)' : 'var(--em)';
-  const accentDim = isSteel ? 'var(--steel-dim)' : 'var(--em-dim)';
-  const accentBorder = isSteel ? 'var(--steel-border)' : 'var(--em-border)';
+  const isPurple = accent === 'purple';
+  const accentColor = isPurple ? 'var(--purple)' : 'var(--em)';
+  const accentDim = isPurple ? 'var(--purple-dim)' : 'var(--em-dim)';
+  const accentBorder = isPurple ? 'var(--purple-border)' : 'var(--em-border)';
 
   return (
     <div
@@ -103,7 +104,7 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
       style={{ padding: '24px', cursor: 'default', height: '100%' }}
       onMouseEnter={e => {
         e.currentTarget.style.borderColor = accentBorder;
-        e.currentTarget.style.boxShadow = `var(--shadow-card), 0 0 40px ${isSteel ? 'rgba(141,166,201,0.08)' : 'rgba(0,217,126,0.12)'}`;
+        e.currentTarget.style.boxShadow = `var(--shadow-card), 0 0 40px ${isPurple ? 'rgba(167,139,250,0.08)' : 'rgba(0,217,126,0.12)'}`;
       }}
       onMouseLeave={e => {
         e.currentTarget.style.borderColor = 'var(--border-subtle)';
@@ -148,8 +149,8 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
               className="skill-bar-fill"
               style={{
                 transform: 'scaleX(0)',
-                background: isSteel
-                  ? 'linear-gradient(90deg, #6c84a3, #8da6c9)'
+                background: isPurple
+                  ? 'linear-gradient(90deg, #8b5cf6, #a78bfa)'
                   : 'linear-gradient(90deg, #00b868, #00d97e)',
               }}
             />
@@ -169,10 +170,11 @@ const SkillCard = ({ title, icon, items, level, accent }) => {
   );
 };
 
-const Skills = () => {
+const Skills = ({ isLoaded }) => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    if (!isLoaded) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -189,10 +191,10 @@ const Skills = () => {
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [isLoaded]);
 
   return (
-    <section id="skills" style={{ paddingTop: '0px', paddingBottom: '40px' }}>
+    <section id="skills" style={{ paddingTop: '20px', paddingBottom: '20px' }}>
       <div className="col-wide" ref={sectionRef}>
 
         {/* Section heading */}
@@ -223,7 +225,7 @@ const Skills = () => {
                 transition: 'opacity 0.55s var(--ease-spring), transform 0.55s var(--ease-spring)',
               }}
             >
-              <SkillCard {...group} />
+              <SkillCard {...group} isLoaded={isLoaded} />
             </div>
           ))}
         </div>

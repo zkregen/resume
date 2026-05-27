@@ -1,288 +1,383 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, Folder } from 'lucide-react';
+
+// --- Count-up hook with IntersectionObserver ---
+function useCountUp(target, duration = 2200, isLoaded = false) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!isLoaded || !started) return;
+    let startTime = null;
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+      else setCount(target);
+    };
+    requestAnimationFrame(step);
+  }, [started, target, duration, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStarted(true); },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [isLoaded]);
+
+  return { count, ref };
+}
+
+// --- Stat item ---
+function StatItem({ target, prefix = '', suffix = '', label, isLoaded }) {
+  const { count, ref } = useCountUp(target, 2200, isLoaded);
+  return (
+    <div ref={ref} className="flex flex-col items-center gap-1.5 px-5 first:pl-0 last:pr-0">
+      <span
+        style={{
+          fontFamily: 'Outfit, sans-serif',
+          fontWeight: 900,
+          fontSize: 'clamp(1.75rem, 3.2vw, 2.4rem)',
+          lineHeight: 1,
+          background: 'linear-gradient(135deg, #00d97e, #80f0c8)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        }}
+      >
+        {prefix}{count}{suffix}
+      </span>
+      <span
+        style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '0.72rem',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'var(--tx-3)',
+          textAlign: 'center',
+          lineHeight: 1.4,
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
 const roles = ['Motion Designer', 'Animator', 'Video Editor', 'Project Manager'];
 
-const stats = [
-  { target: 12, prefix: '', suffix: 'M+', label: 'переглядів / міс.' },
-  { target: 300, prefix: '+', suffix: '%', label: 'зростання охоплення' },
-  { target: 100, prefix: '', suffix: '%', label: 'дедлайни виконані' },
+const highlights = [
+  'Керував міжнародними YouTube-каналами з мільйонними охопленнями.',
+  'Оптимізував продакшн, збільшивши охоплення мережі на понад 300%.',
+  'Співпрацюю із закордонними брендами та клієнтами.',
+  'Супроводжую весь цикл: від розробки ідеї до саунд-дизайну та публікації.',
 ];
 
-/* ── Smooth Count Up Sub-component ── */
-const CountUp = ({ target, prefix = '', suffix = '', delay = 800, duration = 1200 }) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let startTimestamp = null;
-    let timerId;
-
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      const easeProgress = progress * (2 - progress); // Ease Out Quad
-      setCount(Math.floor(easeProgress * target));
-
-      if (progress < 1) {
-        timerId = requestAnimationFrame(step);
-      } else {
-        setCount(target);
-      }
-    };
-
-    const delayId = setTimeout(() => {
-      timerId = requestAnimationFrame(step);
-    }, delay);
-
-    return () => {
-      clearTimeout(delayId);
-      if (timerId) cancelAnimationFrame(timerId);
-    };
-  }, [target, delay, duration]);
-
+const Hero = ({ isLoaded }) => {
   return (
     <>
-      {prefix}
-      {count}
-      {suffix}
-    </>
-  );
-};
+      <style>{`
+        @keyframes heroFadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes heroFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
 
-const highlights = [
-  {
-    text: ['Керую міжнародними YouTube-каналами з ', 'мільйонними охопленнями', '.'],
-    accent: 1,
-  },
-  {
-    text: ['Оптимізував продакшн, збільшивши охоплення мережі ', 'на понад 300%', '.'],
-    accent: 1,
-  },
-  {
-    text: ['Співпрацюю із ', 'закордонними брендами', ' та клієнтами.'],
-    accent: 1,
-  },
-  {
-    text: ['Супроводжую ', 'весь цикл', ': від розробки ідеї до саунд-дизайну та публікації.'],
-    accent: 1,
-  },
-];
+        /* Hidden states before load */
+        .h-f1, .h-f2, .h-f3, .h-f4, .h-f5, .h-f6 {
+          opacity: 0;
+        }
 
-const Hero = () => {
-  return (
-    <section
-      id="hero"
-      style={{ paddingTop: '128px', paddingBottom: '48px', position: 'relative' }}
-    >
-      <div className="col-wide">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* ── Left Column: Bio & Info ── */}
-          <div className="lg:col-span-7 flex flex-col space-y-6 text-left">
-            
-            {/* Name and tags */}
-            <div>
-              <h1
+        .is-loaded .h-f1 { animation: heroFadeUp 0.65s ease both; }
+        .is-loaded .h-f2 { animation: heroFadeUp 0.65s ease both; animation-delay: 0.15s; }
+        .is-loaded .h-f3 { animation: heroFadeUp 0.65s ease both; animation-delay: 0.25s; }
+        .is-loaded .h-f4 { animation: heroFadeUp 0.65s ease both; animation-delay: 0.35s; }
+        .is-loaded .h-f5 { animation: heroFadeUp 0.65s ease both; animation-delay: 0.45s; }
+        .is-loaded .h-f6 { animation: heroFadeIn 0.9s ease both;  animation-delay: 0.55s; }
+
+        .h-name {
+          cursor: default;
+        }
+
+        .h-tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 4px 13px;
+          border-radius: 9999px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.74rem;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          border: 1px solid var(--border-subtle);
+          background: rgba(255,255,255,0.03);
+          color: var(--tx-2);
+          transition: all 0.22s ease;
+          cursor: default;
+        }
+        .h-tag:hover {
+          border-color: var(--em-border);
+          color: var(--em);
+          background: rgba(0,217,126,0.06);
+        }
+        .h-tag-em {
+          border-color: var(--em-border);
+          background: var(--em-dim);
+          color: var(--em);
+        }
+        .h-tag-em:hover {
+          border-color: var(--purple-border);
+          color: var(--purple);
+          background: var(--purple-dim);
+        }
+
+        .h-highlight {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          padding: 7px 12px;
+          border-radius: 10px;
+          font-family: 'Inter', sans-serif;
+          font-size: 0.84rem;
+          line-height: 1.55;
+          color: var(--tx-2);
+          transition: background 0.2s ease, color 0.2s ease;
+          cursor: default;
+        }
+        .h-highlight:hover {
+          color: var(--tx-1);
+        }
+        .h-dot {
+          flex-shrink: 0;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--em);
+          box-shadow: 0 0 8px rgba(0,217,126,0.6);
+          transform: translateY(2px);
+        }
+
+        .h-stat-sep {
+          width: 1px;
+          height: 38px;
+          align-self: center;
+          background: var(--border-subtle);
+          flex-shrink: 0;
+        }
+      `}</style>
+
+      <section
+        id="hero"
+        style={{ paddingTop: '112px', paddingBottom: '20px', position: 'relative' }}
+      >
+        <div className="col-wide">
+          <div className="flex flex-col items-center lg:flex-row lg:items-end gap-10 lg:gap-14">
+
+            {/* ── LEFT COLUMN ── */}
+            <div className="flex-1 flex flex-col gap-6 order-2 lg:order-1 text-center lg:text-left w-full">
+
+              {/* Name & Roles */}
+              <div className="h-f1">
+                <h1
+                  className="h-name"
+                  style={{
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 900,
+                    fontSize: 'clamp(2.6rem, 5.8vw, 4.3rem)',
+                    letterSpacing: '-0.035em',
+                    lineHeight: 1.05,
+                    color: 'var(--tx-1)',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Микита{' '}
+                  <span
+                    style={{
+                      background: 'linear-gradient(135deg, #00d97e, #80f0c8)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Ніколаєнко
+                  </span>
+                </h1>
+                <div className="flex flex-wrap gap-1.5 justify-center lg:justify-start">
+                  {roles.map((role, i) => (
+                    <span key={role} className={i === 0 ? 'h-tag h-tag-em' : 'h-tag'}>
+                      {role}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bio */}
+              <p
+                className="h-f2"
                 style={{
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 900,
-                  fontSize: 'clamp(36px, 6vw, 54px)',
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.05,
-                  color: 'var(--tx-1)',
-                  marginBottom: '24px',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '1.08rem',
+                  lineHeight: 1.8,
+                  color: 'var(--tx-2)',
+                  maxWidth: '540px',
+                  margin: '0 auto 0 0',
                 }}
               >
-                Микита <span className="grad-em">Ніколаєнко</span>
-              </h1>
-              
-              {/* Role tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {roles.map((role, i) => (
-                  <span
-                    key={role}
-                    className={i === 0 ? 'tag-em' : 'tag'}
-                    style={{ fontSize: '11px' }}
-                  >
-                    {role}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Bio text */}
-            <p
-              style={{
-                fontSize: '16px',
-                lineHeight: 1.75,
-                color: 'var(--tx-2)',
-                maxWidth: '600px',
-              }}
-            >
-              Створюю відеоконтент, який{' '}
-              <span
-                style={{
+                Створюю відеоконтент, який{' '}
+                <span style={{
                   color: 'var(--tx-1)',
                   fontWeight: 600,
                   borderBottom: '1px solid var(--em-border)',
                   paddingBottom: '1px',
-                }}
-              >
-                вартий уваги
-              </span>
-              . Спеціалізуюся на моушн-дизайні, анімації та динамічному монтажі для YouTube, Reels та TikTok.
-            </p>
+                }}>
+                  вартий уваги
+                </span>
+                . Спеціалізуюся на моушн-дизайні, анімації та динамічному монтажі для{' '}
+                <span style={{ color: 'var(--tx-1)', fontWeight: 500 }}>YouTube</span>,{' '}
+                <span style={{ color: 'var(--tx-1)', fontWeight: 500 }}>Reels</span> та{' '}
+                <span style={{ color: 'var(--tx-1)', fontWeight: 500 }}>TikTok</span>.
+              </p>
 
-            {/* Highlights List */}
-            <div className="glass" style={{ padding: '24px 28px' }}>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                {highlights.map((item, i) => (
-                  <li key={i} className="highlight-item">
-                    <span className="bullet">›</span>
-                    <span>
-                      {Array.isArray(item.text) ? (
-                        item.text.map((part, j) =>
-                          j === item.accent ? (
-                            <span key={j} className="accent-text">{part}</span>
-                          ) : (
-                            <span key={j}>{part}</span>
-                          )
-                        )
-                      ) : (
-                        item.text
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {/* Stats row */}
+              <div className="h-f3 flex items-center justify-center lg:justify-start">
+                <StatItem target={12}  prefix="" suffix="M+" label="переглядів / міс." isLoaded={isLoaded} />
+                <div className="h-stat-sep" />
+                <StatItem target={300} prefix="+" suffix="%" label="зростання охоплення" isLoaded={isLoaded} />
+                <div className="h-stat-sep" />
+                <StatItem target={100} prefix="" suffix="%" label="дедлайни виконані" isLoaded={isLoaded} />
+              </div>
+
+              {/* CTA buttons */}
+              <div className="h-f4 flex flex-wrap gap-3 justify-center lg:justify-start">
+                <a
+                  href="https://freelancehunt.com/freelancer/thirtyass.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  Замовити проєкт
+                  <ArrowUpRight size={16} />
+                </a>
+                <a
+                  href="https://drive.google.com/drive/folders/1dHnZJL8DctbLkW8KM1Q5ADQ15FMPYMNy?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                >
+                  <Folder size={15} />
+                  Портфоліо на Drive
+                </a>
+              </div>
+
             </div>
 
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', paddingTop: '8px' }}>
-              <a
-                href="https://freelancehunt.com/freelancer/thirtyass.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-              >
-                Замовити проєкт
-                <ArrowUpRight size={16} />
-              </a>
-              <a
-                href="https://drive.google.com/drive/folders/1dHnZJL8DctbLkW8KM1Q5ADQ15FMPYMNy?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary"
-              >
-                Портфоліо на Drive
-              </a>
-            </div>
-
-          </div>
-
-          {/* ── Right Column: Avatar & Stats ── */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-8">
-            
-            {/* Avatar container */}
-            <div style={{ position: 'relative' }}>
-              <img
-                src="/photo.jpg"
-                alt="Микита Ніколаєнко"
-                onError={e => {
-                  e.target.onerror = null;
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'flex';
-                }}
-                className="avatar-ring"
-                style={{
-                  width: '160px',
-                  height: '160px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  animation: 'float 6s ease-in-out infinite',
-                }}
-              />
-              {/* Fallback */}
+            {/* ── RIGHT COLUMN ── */}
+            <div className="flex-shrink-0 w-full max-w-[360px] lg:w-[360px] order-1 lg:order-2 h-f6">
               <div
-                className="avatar-ring"
                 style={{
-                  display: 'none',
-                  width: '160px',
-                  height: '160px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #00d97e, #00b868)',
+                  position: 'relative',
+                  borderRadius: '24px',
+                  background: 'rgba(14,17,28,0.70)',
+                  backdropFilter: 'blur(24px)',
+                  WebkitBackdropFilter: 'blur(24px)',
+                  border: '1px solid var(--border-subtle)',
+                  boxShadow: 'var(--shadow-card)',
+                  padding: '24px 28px 20px',
+                  display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#040b07',
-                  fontFamily: "'Outfit', sans-serif",
-                  fontWeight: 900,
-                  fontSize: '36px',
-                  animation: 'float 6s ease-in-out infinite',
+                  gap: '18px',
+                  overflow: 'hidden',
                 }}
               >
-                МН
+                {/* Glow behind avatar */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '-10%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 240,
+                    height: 240,
+                    borderRadius: '9999px',
+                    background: 'radial-gradient(circle, rgba(0,217,126,0.20) 0%, rgba(167,139,250,0.10) 50%, transparent 72%)',
+                    filter: 'blur(36px)',
+                    pointerEvents: 'none',
+                  }}
+                />
+
+                {/* Avatar */}
+                <div className="h-ring relative z-10 p-1">
+                  <img
+                    src="/photo.jpg"
+                    alt="Микита Ніколаєнко"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                    style={{
+                      width: 148,
+                      height: 148,
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                  {/* Fallback */}
+                  <div style={{
+                    display: 'none',
+                    width: 148,
+                    height: 148,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #00d97e, #00b868)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#040b07',
+                    fontFamily: 'Outfit, sans-serif',
+                    fontWeight: 900,
+                    fontSize: '36px',
+                  }}>
+                    МН
+                  </div>
+                </div>
+
+                {/* Separator */}
+                <div style={{
+                  width: '100%',
+                  height: '1px',
+                  background: 'var(--border-subtle)',
+                  position: 'relative',
+                  zIndex: 1,
+                }} />
+
+                {/* Highlights */}
+                <div className="w-full flex flex-col gap-0.5 relative z-10">
+                  {highlights.map((item, i) => (
+                    <div key={i} className="h-highlight">
+                      <div style={{ height: '1.55em', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                        <span className="h-dot" aria-hidden="true" />
+                      </div>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </div>
 
-            {/* Stats list */}
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '320px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px',
-              }}
-            >
-              {stats.map(({ target, prefix, suffix, label }) => (
-                <div
-                  key={label}
-                  style={{
-                    padding: '16px 20px',
-                    borderRadius: '16px',
-                    border: '1px solid var(--border-subtle)',
-                    background: 'rgba(0, 217, 126, 0.025)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '16px',
-                    transition: 'all 0.3s',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = 'rgba(0, 217, 126, 0.065)';
-                    e.currentTarget.style.borderColor = 'var(--em-border)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'rgba(0, 217, 126, 0.025)';
-                    e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Outfit', sans-serif",
-                      fontSize: '12px',
-                      color: 'var(--tx-3)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      fontWeight: 600,
-                      lineHeight: 1.3,
-                      maxWidth: '140px',
-                    }}
-                  >
-                    {label}
-                  </span>
-                  <span className="stat-val grad-em" style={{ fontSize: '24px', flexShrink: 0 }}>
-                    <CountUp target={target} prefix={prefix} suffix={suffix} />
-                  </span>
-                </div>
-              ))}
-            </div>
-
           </div>
-
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

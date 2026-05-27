@@ -1,12 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Skills from './components/Skills';
 import Portfolio from './components/Portfolio';
 import AmbientOrbs from './components/AmbientOrbs';
+import Preloader from './components/Preloader';
+import { gsap } from 'gsap';
 
 function App() {
   const glowRef = useRef(null);
+  const wrapRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     let rafId;
@@ -39,40 +43,99 @@ function App() {
     };
   }, []);
 
+  const handlePreloaderComplete = () => {
+    setIsLoaded(true);
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    gsap.fromTo(
+      wrap,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.85, ease: 'power2.out' }
+    );
+  };
+
   return (
-    <div
-      style={{
-        position: 'relative',
-        minHeight: '100svh',
-        background: 'var(--bg-base)',
-        color: 'var(--tx-1)',
-      }}
-    >
-      {/* Cinematic ambient background */}
-      <AmbientOrbs />
+    <>
+      <Preloader onComplete={handlePreloaderComplete} />
 
-      {/* Cursor spotlight glow */}
       <div
-        ref={glowRef}
+        ref={wrapRef}
+        className={isLoaded ? 'is-loaded' : ''}
         style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 1,
-          pointerEvents: 'none',
-          transition: 'none',
+          position: 'relative',
+          minHeight: '100svh',
+          background: 'var(--bg-base)',
+          color: 'var(--tx-1)',
+          opacity: 0,
         }}
-      />
+      >
+        {/* Cinematic ambient background */}
+        <AmbientOrbs />
 
-      {/* Page content */}
-      <div style={{ position: 'relative', zIndex: 10 }}>
-        <Navbar />
-        <main>
-          <Hero />
-          <Skills />
-          <Portfolio />
-        </main>
+        {/* Cursor spotlight glow */}
+        <div
+          ref={glowRef}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition: 'none',
+          }}
+        />
+
+        {/* Page content */}
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          <Navbar />
+          <main>
+            <Hero isLoaded={isLoaded} />
+            <Skills isLoaded={isLoaded} />
+            <Portfolio isLoaded={isLoaded} />
+          </main>
+          <footer
+            style={{
+              textAlign: 'center',
+              padding: '20px 24px 32px',
+              borderTop: '1px solid var(--border-subtle)',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '11px',
+                letterSpacing: '0.08em',
+                color: 'var(--tx-3)',
+              }}
+            >
+              Спеціально для сервісу{' '}
+              <a
+                href="https://freelancehunt.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: 'var(--tx-3)',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid rgba(255,255,255,0.10)',
+                  paddingBottom: '1px',
+                  transition: 'color 0.2s ease, border-color 0.2s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = 'var(--em)';
+                  e.currentTarget.style.borderBottomColor = 'var(--em-border)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = 'var(--tx-3)';
+                  e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.10)';
+                }}
+              >
+                Freelancehunt
+              </a>
+            </span>
+          </footer>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

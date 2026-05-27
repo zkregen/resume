@@ -120,11 +120,9 @@ const Navbar = () => {
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.color = 'var(--em)';
-                  e.currentTarget.style.background = 'var(--em-dim)';
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.color = 'var(--tx-2)';
-                  e.currentTarget.style.background = 'transparent';
                 }}
               >
                 {label}
