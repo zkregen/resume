@@ -53,6 +53,16 @@ const CARD_STYLES = `
   .card-metric-wrap {
     animation: cardMetricFadeUp 0.55s cubic-bezier(0.16,1,0.3,1) both;
   }
+
+  /* ── Mobile-responsive card adjustments ── */
+  @media (max-width: 600px) {
+    .card-task-item {
+      font-size: 11px;
+      line-height: 1.45;
+      gap: 7px;
+      padding: 3px 6px;
+    }
+  }
 `;
 
 /* ── Parse a metric value into { numericPart, suffix }
@@ -126,7 +136,7 @@ function AnimatedMetric({ value, isActive, sectionVisible, isSteel, isOrange, is
       style={{
         fontFamily: "'Outfit', sans-serif",
         fontWeight: 900,
-        fontSize: '24px',
+        fontSize: 'clamp(20px, 4.5vw, 24px)',
         letterSpacing: '-0.04em',
         lineHeight: 1,
         marginBottom: '5px',
@@ -413,6 +423,7 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
 
         {/* Content */}
         <div
+          className="card-content-inner"
           style={{
             position: 'relative',
             zIndex: 2,
@@ -420,11 +431,11 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            padding: '26px',
+            padding: 'clamp(16px, 4vw, 26px)',
           }}
         >
           {/* Top block */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 2vw, 14px)' }}>
             {/* Type badge — animates when card becomes center */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span
@@ -452,7 +463,7 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
               style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontWeight: 800,
-                fontSize: '19px',
+                fontSize: 'clamp(16px, 3.8vw, 19px)',
                 lineHeight: 1.22,
                 letterSpacing: '-0.025em',
                 color: hasVideo ? '#fff' : 'var(--tx-1)',
@@ -463,8 +474,8 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
 
             <p
               style={{
-                fontSize: '13px',
-                lineHeight: 1.68,
+                fontSize: 'clamp(11.5px, 2.8vw, 13px)',
+                lineHeight: 1.58,
                 color: hasVideo ? 'rgba(255,255,255,0.60)' : 'var(--tx-2)',
               }}
             >
@@ -472,7 +483,7 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
             </p>
 
             {/* Tasks — hero-highlight style: dot + fade-up stagger */}
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '2px', margin: '0 -8px' }}>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1px', margin: '0 -8px' }}>
               {project.tasks.map((task, idx) => (
                 <li
                   key={`${animKey}-${idx}`}
@@ -506,7 +517,7 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
           </div>
 
           {/* Bottom block with Google Drive Link & Metrics */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(8px, 2vw, 14px)' }}>
             {/* Subtle Google Drive Link */}
             {project.link && (
               <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
@@ -549,7 +560,7 @@ const ProjectCard = ({ project, isCenter, sectionVisible, onVideoDuration, onEnd
                 display: 'flex',
                 gap: 0,
                 borderTop: `1px solid ${hasVideo ? 'rgba(255,255,255,0.10)' : 'var(--border-subtle)'}`,
-                paddingTop: '14px',
+                paddingTop: 'clamp(8px, 2vw, 14px)',
               }}
             >
               {project.metrics.map(({ icon: Icon, value, label, noAnim }, i) => (
@@ -666,7 +677,7 @@ const Portfolio = ({ isLoaded }) => {
         <div
           style={{
             position: 'relative',
-            height: '500px',
+            height: 'clamp(420px, 72vw, 500px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -698,7 +709,7 @@ const Portfolio = ({ isLoaded }) => {
                   position: 'absolute',
                   width: '100%',
                   maxWidth: '400px',
-                  height: '480px',
+                  height: 'clamp(400px, 70vw, 480px)',
                   transition: 'transform 650ms var(--ease-spring), opacity 500ms var(--ease-out), filter 500ms var(--ease-out)',
                   transform,
                   opacity: isCenter ? 1 : 0.30,
