@@ -168,7 +168,7 @@ const projects = [
     title: 'Створення 2.5D Паралакс-ефекту',
     video: '/parallax.mp4',
     link: 'https://drive.google.com/file/d/1JmCGrIz1S5wnAPAp8wBqKg5wvlp19RpN/view?usp=sharing',
-    description: 'Розділення статичного зображення на багатовимірні шари та їх анімація у 3D-просторі After Effects. Додавання глибини різкості (DOF) та світлового об’єму.',
+    description: 'Розділення статичного зображення на багатовимірні шари та їх анімація у 3D-просторі After Effects.',
     tasks: [
       'Підготовка та домальовування шарів у Photoshop',
       'Налаштування 3D-камери та фокусної відстані',
