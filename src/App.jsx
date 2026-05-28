@@ -98,6 +98,10 @@ function App() {
               textAlign: 'center',
               padding: '20px 24px 32px',
               borderTop: '1px solid var(--border-subtle)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px',
             }}
           >
             <span
@@ -132,6 +136,25 @@ function App() {
                 Freelancehunt
               </a>
             </span>
+            <div>
+              <a
+                href="https://freelancehunt.com/freelancer/thirtyass.html?from=shield&r=0bGr7"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://freelancehunt.com/shields/display/id/1377601/type/mainskillone?style=flat-square&lang=uk"
+                  alt="Freelancehunt — простий та чесний фриланс"
+                  style={{
+                    borderRadius: '4px',
+                    opacity: 0.75,
+                    transition: 'opacity 0.25s ease',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = 1}
+                  onMouseLeave={e => e.currentTarget.style.opacity = 0.75}
+                />
+              </a>
+            </div>
           </footer>
         </div>
       </div>
